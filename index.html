@@ -15,6 +15,8 @@
             --border-color: #e0e0e0;
             --background-light: #f9f9f9;
             --background-medium: #ecf0f1;
+            --success-color: #27ae60; /* Verde para resultados positivos */
+            --danger-color: #e74c3c; /* Rojo para resultados negativos */
         }
 
         body {
@@ -185,7 +187,7 @@
         }
 
         .partido .team-name:last-child {
-             text-align: right;
+            text-align: right;
         }
 
         .match-info {
@@ -194,7 +196,7 @@
             align-items: center;
             justify-content: center;
             font-family: 'Poppins', sans-serif;
-            font-weight: 60            0;
+            font-weight: 600;
             color: var(--primary-dark);
             min-width: 120px; /* Para mantener consistencia en el ancho del marcador/hora */
             flex-basis: 30%; /* Ocupa una parte del espacio */
@@ -216,6 +218,50 @@
             padding: 4px 8px;
             border-radius: 5px;
             border: 1px solid var(--border-color);
+        }
+
+        /* Estilos específicos para los partidos de la final */
+        .final-match {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .final-match .team-name {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .final-match .resultado {
+            color: var(--accent-yellow); /* Amarillo para el resultado de la final */
+            font-size: 1.5em;
+        }
+
+        .final-match .hora {
+            background-color: var(--primary-light);
+            color: var(--text-light);
+            border-color: var(--text-light);
+        }
+
+        .third-place-match {
+            background-color: #bdc3c7; /* Gris claro para tercer puesto */
+            color: var(--text-dark);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .third-place-match .team-name {
+            color: var(--primary-dark);
+        }
+
+        .third-place-match .resultado {
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .third-place-match .hora {
+            background-color: var(--background-light);
+            color: #555;
+            border-color: #aaa;
         }
 
         /* Responsividad */
@@ -474,7 +520,7 @@
                         <span class="resultado">1-9</span>
                         <span class="hora">03:30</span>
                     </div>
-                    <span class="team-name">GALACTICOS CF</span>
+                    <span class="team-name">GALACTICOS FC</span>
                 </div>
                 <div class="partido">
                     <span class="team-name">BLACK ANGELS FC</span>
@@ -484,6 +530,32 @@
                         <span class="hora">04:20</span>
                     </div>
                     <span class="team-name">DANGERS CF</span>
+                </div>
+            </div>
+
+            ---
+
+            <div class="jornada-group">
+                <h3>Partido por el 3er Puesto</h3>
+                <div class="partido third-place-match">
+                    <span class="team-name">DANGERS CF FC</span>
+                    <div class="match-info">
+                        <span class="jornada-date">3 de agosto de 2025</span>
+                        <span class="resultado">2 - 0</span> <span class="hora">03:30</span>
+                    </div>
+                    <span class="team-name">ROJOS FC</span>
+                </div>
+            </div>
+
+            <div class="jornada-group">
+                <h3>¡GRAN FINAL!</h3>
+                <div class="partido final-match">
+                    <span class="team-name">BLACK ANGELS FC</span>
+                    <div class="match-info">
+                        <span class="jornada-date">3 de agosto de 2025</span>
+                        <span class="resultado">3 - 1</span> <span class="hora">04:20</span>
+                    </div>
+                    <span class="team-name">GALACTICOS FC</span>
                 </div>
             </div>
 
