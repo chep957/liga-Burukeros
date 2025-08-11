@@ -1,566 +1,127 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabla de Fútbol Profesional</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-dark: #568fd1;
-            --primary-light: #4b7196;
-            --accent-yellow:  #d4af37;
-            --text-dark: #4c5254;
-            --text-light: #e2dfe6;
-            --border-color: #dce0e0;
-            --background-light: #edf0f5;
-            --background-medium: #edebec;
-            --success-color: #e1e7e8;
-            --danger-color: #e1e7e8; 
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 40px 20px;
-            background-color: var(--background-medium);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        /* Contenedor principal para centrar el contenido */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        h2, h3, caption {
-            font-family: 'Poppins', sans-serif;
-            color: var(--primary-dark);
-            text-align: center;
-            margin-bottom: 25px;
-            font-weight: 700;
-        }
-
-        caption {
-            font-size: 2.2em;
-            margin-bottom: 30px;
-            color: var(--primary-dark);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* --- Tabla de Posiciones --- */
-        table {
-            width: 100%;
-            border-collapse: separate; /* Permite border-radius en thead */
-            border-spacing: 0;
-            margin: 30px auto;
-            background-color: #fff;
-            border-radius: 10px;
-            overflow: hidden; /* Asegura que los bordes redondeados se apliquen */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        thead {
-            background-color: var(--primary-dark);
-            color: var(--text-light);
-        }
-
-        th, td {
-            border: none; /* Quitamos los bordes individuales para un look más limpio */
-            padding: 15px 10px;
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        th {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 0.95em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Bordes redondeados en las esquinas del thead */
-        th:first-child { border-top-left-radius: 10px; }
-        th:last-child { border-top-right-radius: 10px; }
-
-        tbody tr:nth-child(even) {
-            background-color: var(--background-light);
-        }
-
-        tbody tr:hover {
-            background-color: #e6f0f7; /* Un azul claro al pasar el ratón */
-            transition: background-color 0.3s ease;
-        }
-
-        .equipo {
-            text-align: left;
-            font-weight: 600;
-            color: var(--primary-dark);
-            padding-left: 20px; /* Más padding para los nombres de equipo */
-        }
-
-        /* Resaltar la posición 1 */
-        tbody tr:first-child .equipo,
-        tbody tr:first-child td {
-            font-weight: 700;
-            color: var(--accent-yellow);
-        }
-
-        /* --- Calendario de Partidos --- */
-        .jornada-section {
-            padding: 40px 0;
-            border-top: 1px solid var(--border-color); /* Separador visual */
-            margin-top: 40px;
-        }
-
-        .jornada-section h2 {
-            font-size: 2em;
-            margin-bottom: 30px;
-            color: var(--primary-dark);
-            border-bottom: 3px solid var(--accent-yellow);
-            display: inline-block;
-            padding-bottom: 10px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .jornada-group {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-
-        .jornada-group h3 {
-            font-size: 1.6em;
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: var(--primary-dark);
-            text-align: left; /* Alineado a la izquierda dentro del grupo */
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--background-medium);
-        }
-
-        .jornada-date {
-            font-size: 0.95em;
-            color: #666;
-            margin-bottom: 20px;
-            display: block;
-            text-align: center; /* Centrado dentro de match-info */
-            font-style: italic;
-        }
-
-        .partido {
-            display: flex;
-            justify-content: space-between; /* Espacia los elementos */
-            align-items: center;
-            background-color: var(--background-medium);
-            border-radius: 8px;
-            padding: 12px 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .partido:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .partido .team-name {
-            flex-grow: 1; /* Permite que los nombres de equipo ocupen espacio */
-            text-align: left;
-            font-weight: 500;
-            color: var(--text-dark);
-            white-space: nowrap; /* Evita que el nombre del equipo se rompa */
-            overflow: hidden; /* Oculta el desbordamiento si el nombre es muy largo */
-            text-overflow: ellipsis; /* Añade puntos suspensivos si el nombre es muy largo */
-            flex-basis: 35%; /* Ocupa una parte del espacio */
-        }
-
-        .partido .team-name:last-child {
-            text-align: right;
-        }
-
-        .match-info {
-            display: flex;
-            flex-direction: column; /* Apila resultado y hora */
-            align-items: center;
-            justify-content: center;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            color: var(--primary-dark);
-            min-width: 120px; /* Para mantener consistencia en el ancho del marcador/hora */
-            flex-basis: 30%; /* Ocupa una parte del espacio */
-            gap: 5px; /* Espacio entre score y hora */
-        }
-
-        .resultado {
-            font-size: 1.3em;
-            color: var(--accent-yellow);
-            font-weight: 700;
-            margin: 0; /* Asegura que no tenga márgenes internos */
-        }
-
-        .hora {
-            font-size: 0.85em;
-            color: #777;
-            font-weight: 400;
-            background-color: var(--background-light);
-            padding: 4px 8px;
-            border-radius: 5px;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Estilos específicos para los partidos de la final */
-        .final-match {
-            background-color: var(--primary-dark);
-            color: var(--text-light);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        .final-match .team-name {
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        .final-match .resultado {
-            color: var(--accent-yellow); /* Amarillo para el resultado de la final */
-            font-size: 1.5em;
-        }
-
-        .final-match .hora {
-            background-color: var(--primary-light);
-            color: var(--text-light);
-            border-color: var(--text-light);
-        }
-
-        .third-place-match {
-            background-color: #bdc3c7; /* Gris claro para tercer puesto */
-            color: var(--text-dark);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .third-place-match .team-name {
-            color: var(--primary-dark);
-        }
-
-        .third-place-match .resultado {
-            color: var(--primary-dark);
-            font-weight: 700;
-        }
-
-        .third-place-match .hora {
-            background-color: var(--background-light);
-            color: #555;
-            border-color: #aaa;
-        }
-
-        /* Responsividad */
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-                margin: 15px;
-            }
-            table, .jornada-section {
-                width: 100%;
-            }
-            th, td {
-                padding: 10px 5px;
-                font-size: 0.85em;
-            }
-            .equipo {
-                padding-left: 8px;
-            }
-
-            .partido {
-                flex-direction: row; /* Mantener en fila en pantallas pequeñas */
-                align-items: center;
-                padding: 10px 15px;
-                gap: 5px; /* Reducir el espacio entre elementos */
-            }
-
-            .partido .team-name {
-                flex-basis: 35%; /* Asegura que ocupen espacio */
-                font-size: 0.9em;
-                white-space: normal; /* Permitir que el nombre del equipo se rompa */
-                overflow: visible; /* Mostrar todo el nombre */
-                text-overflow: clip; /* No añadir puntos suspensivos */
-                text-align: left; /* Alineación del primer equipo */
-            }
-
-            .partido .team-name:last-child {
-                text-align: right; /* Alineación del segundo equipo */
-            }
-
-            .partido .match-info {
-                flex-basis: 30%; /* Asegura que el match info ocupe espacio central */
-                min-width: unset; /* Quitar min-width fijo */
-                gap: 2px; /* Reducir espacio entre resultado y hora */
-            }
-
-            .resultado {
-                font-size: 1.1em;
-            }
-
-            .hora {
-                font-size: 0.75em;
-                padding: 3px 6px;
-            }
-
-            .jornada-group h3 {
-                font-size: 1.4em;
-            }
-            .jornada-date {
-                font-size: 0.85em;
-                margin-bottom: 10px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .partido {
-                padding: 8px 10px;
-            }
-            .partido .team-name {
-                font-size: 0.85em;
-            }
-            .resultado {
-                font-size: 1em;
-            }
-            .hora {
-                font-size: 0.7em;
-                padding: 2px 4px;
-            }
-        }
-    </style>
+<title>Calendario de Fútbol</title>
+<style>
+  body { font-family: Arial, sans-serif; }
+  .container { display: flex; justify-content: space-around; padding: 20px; }
+  .table-section { margin-right: 20px; }
+  .schedule-section { display: flex; flex-direction: column; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+  th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+  th { background-color: #5b9bd5; color: white; }
+  .schedule-table { background-color: #dbe5f1; }
+  .schedule-table th { background-color: #5b9bd5; color: white; }
+  .schedule-table td { background-color: #e2efda; }
+  .schedule-table tr:nth-child(odd) td { background-color: #e2efda; }
+  .schedule-header { background-color: #5b9bd5; color: white; padding: 10px; text-align: center; font-weight: bold; }
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <table>
-            <caption>Tabla de Posiciones - Liga de Fútbol Amistosa</caption>
-            <thead>
-                <tr>
-                    <th>Posiciones</th>
-                    <th class="equipo">Equipo</th>
-                    <th>PJ</th>
-                    <th>GF</th>
-                    <th>GC</th>
-                    <th>DG</th>
-                    <th>Pts</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td class="equipo">BLACK ANGELS FC</td>
-                    <td>6</td>
-                    <td>22</td>
-                    <td>10</td>
-                    <td>12</td>
-                    <td>12</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td class="equipo">GALACTICOS FC</td>
-                    <td>6</td>
-                    <td>20</td>
-                    <td>17</td>
-                    <td>3</td>
-                    <td>10</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td class="equipo">DANGERS CF FC</td>
-                    <td>6</td>
-                    <td>14</td>
-                    <td>8</td>
-                    <td>6</td>
-                    <td>10</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td class="equipo">ROJOS FC</td>
-                    <td>6</td>
-                    <td>8</td>
-                    <td>29</td>
-                    <td>-21</td>
-                    <td>2</td>
-                </tr>
-            </tbody>
-        </table>
+<div class="container">
+  <div class="table-section">
+    <table>
+      <thead>
+        <tr>
+          <th>POS</th>
+          <th>EQUIPO</th>
+          <th>PJ</th>
+          <th>GF</th>
+          <th>GC</th>
+          <th>DG</th>
+          <th>PTS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>RED DEVILS FC</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>DESTRUCTOR FC</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>GALACTICOS FC</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>DANGERS CF</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-        <div class="jornada-section">
-            <h2>Calendario de Partidos</h2>
+  <div class="schedule-section">
+    <div class="schedule-header">JORNADA 1</div>
+    <div style="text-align: center; margin-bottom: 10px;">24 de agosto de 2025</div>
+    <table class="schedule-table">
+      <tbody>
+        <tr>
+          <td>DESTRUCTOR FC</td>
+          <td>03:20</td>
+          <td>DANGERS CF</td>
+        </tr>
+        <tr>
+          <td>GALACTICOS FC</td>
+          <td>04:20</td>
+          <td>RED DEVILS FC</td>
+        </tr>
+      </tbody>
+    </table>
 
-            <div class="jornada-group">
-                <h3>Jornada 1</h3>
-                <div class="partido">
-                    <span class="team-name">DANGERS CF</span>
-                    <div class="match-info">
-                        <span class="jornada-date">22 de junio 2025</span>
-                        <span class="resultado">4 - 4</span>
-                        <span class="hora">03:30</span>
-                    </div>
-                    <span class="team-name">ROJOS FC</span>
-                </div>
-                <div class="partido">
-                    <span class="team-name">GALACTICOS FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">22 de junio 2025</span>
-                        <span class="resultado">4 - 3</span>
-                        <span class="hora">04:20</span>
-                    </div>
-                    <span class="team-name">BLACK ANGELS FC</span>
-                </div>
-            </div>
-
-            <div class="jornada-group">
-                <h3>Jornada 2</h3>
-                <div class="partido">
-                    <span class="team-name">GALACTICOS FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">29 de junio 2025</span>
-                        <span class="resultado">1 - 4</span>
-                        <span class="hora">03:30</span>
-                    </div>
-                    <span class="team-name">DANGERS CF</span>
-                </div>
-                <div class="partido">
-                    <span class="team-name">ROJOS FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">29 de junio 2025</span>
-                        <span class="resultado">1 - 6</span>
-                        <span class="hora">04:20</span>
-                    </div>
-                    <span class="team-name">BLACK ANGELS FC</span>
-                </div>
-            </div>
-
-            <div class="jornada-group">
-                <h3>Jornada 3</h3>
-                <div class="partido">
-                    <span class="team-name">DANGERS CF</span>
-                    <div class="match-info">
-                        <span class="jornada-date">06 de julio 2025</span>
-                        <span class="resultado">1 - 2</span>
-                        <span class="hora">03:30</span>
-                    </div>
-                    <span class="team-name">BLACK ANGELS FC</span>
-                </div>
-                <div class="partido">
-                    <span class="team-name">GALACTICOS FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">06 de julio 2025</span>
-                        <span class="resultado">2 - 2</span>
-                        <span class="hora">04:20</span>
-                    </div>
-                    <span class="team-name">ROJOS FC</span>
-                </div>
-            </div>
-
-            <div class="jornada-group">
-                <h3>Jornada 4</h3>
-                <div class="partido">
-                    <span class="team-name">BLACK ANGELS FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">13 de julio 2025</span>
-                        <span class="resultado">7 - 3</span>
-                        <span class="hora">03:30</span>
-                    </div>
-                    <span class="team-name">GALACTICOS FC</span>
-                </div>
-                <div class="partido">
-                    <span class="team-name">ROJOS FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">13 de julio 2025</span>
-                        <span class="resultado">0 - 4</span>
-                        <span class="hora">04:20</span>
-                    </div>
-                    <span class="team-name">DANGERS CF</span>
-                </div>
-            </div>
-
-            <div class="jornada-group">
-                <h3>Jornada 5</h3>
-                <div class="partido">
-                    <span class="team-name">BLACK ANGELS FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">20 de julio de 2025</span>
-                        <span class="resultado">4-0</span>
-                        <span class="hora">03:30</span>
-                    </div>
-                    <span class="team-name">ROJOS FC</span>
-                </div>
-                <div class="partido">
-                    <span class="team-name">DANGERS CF</span>
-                    <div class="match-info">
-                        <span class="jornada-date">20 de julio de 2025</span>
-                        <span class="resultado">0-1</span>
-                        <span class="hora">04:20</span>
-                    </div>
-                    <span class="team-name">GALACTICOS FC</span>
-                </div>
-            </div>
-
-            <div class="jornada-group">
-                <h3>Jornada 6</h3>
-                <div class="partido">
-                    <span class="team-name">ROJOS FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">27 de julio de 2025</span>
-                        <span class="resultado">1-9</span>
-                        <span class="hora">03:30</span>
-                    </div>
-                    <span class="team-name">GALACTICOS FC</span>
-                </div>
-                <div class="partido">
-                    <span class="team-name">BLACK ANGELS FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">27 de julio de 2025</span>
-                        <span class="resultado">0-1</span>
-                        <span class="hora">04:20</span>
-                    </div>
-                    <span class="team-name">DANGERS CF</span>
-                </div>
-            </div>
-
-            ---
-
-            <div class="jornada-group">
-                <h3>Partido por el 3er Puesto</h3>
-                <div class="partido third-place-match">
-                    <span class="team-name">DANGERS CF FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">3 de agosto de 2025</span>
-                        <span class="resultado">vs</span> <span class="hora">02:30</span>
-                    </div>
-                    <span class="team-name">ROJOS FC</span>
-                </div>
-            </div>
-
-            <div class="jornada-group">
-                <h3>¡GRAN FINAL!</h3>
-                <div class="partido final-match">
-                    <span class="team-name">BLACK ANGELS FC</span>
-                    <div class="match-info">
-                        <span class="jornada-date">3 de agosto de 2025</span>
-                        <span class="resultado">vs</span> <span class="hora">03:20</span>
-                    </div>
-                    <span class="team-name">GALACTICOS FC</span>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-</body>
-</html>
+    <div class="schedule-header">JORNADA 2</div>
+    <div style="text-align: center; margin-bottom: 10px;">31 de agosto de 2025</div>
+    <table class="schedule-table">
+      <tbody>
+        <tr>
